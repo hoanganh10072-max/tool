@@ -24,6 +24,11 @@ class Settings(BaseSettings):
     dry_run_delay: float = 0.2
     public_auth_user: str = ""
     public_auth_password: str = ""
+    tool_login_enabled: bool = True
+    tool_login_user: str = "DNHH"
+    tool_login_password: str = "DNHH"
+    tool_login_secret: str = "zalo-automation-local-session"
+    tool_login_cookie: str = "zalo_tool_session"
     project_root: Path = Field(default=BASE_DIR)
 
     @property

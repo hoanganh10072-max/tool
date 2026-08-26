@@ -120,6 +120,12 @@ def main() -> None:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
             page = browser.new_page()
+            page.goto(f"{BASE_URL}/login")
+            page.locator("#username").fill("DNHH")
+            page.locator("#password").fill("DNHH")
+            page.get_by_role("button", name="Đăng nhập").click()
+            expect(page.get_by_role("heading", name="Tool Zalo kết bạn và tự động gửi tin nhắn")).to_be_visible()
+
             page.route(f"{BASE_URL}/api/**", api_mock)
             page.goto(BASE_URL)
 

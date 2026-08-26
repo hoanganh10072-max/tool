@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Đăng nhập Tool Zalo</title>
+    <link rel="stylesheet" href="/static/login.css?v=20260826-1" />
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-panel" aria-label="Đăng nhập Tool Zalo">
+        <div class="brand-mark">
+          <img src="/static/assets/logo-hoi-doanh-nhan-mark.png?v=20260826-1" alt="Hội Doanh Nhân" />
+        </div>
+        <div class="brand-copy">
+          <strong>Hội Doanh Nhân</strong>
+          <span>Họ Hoàng - Huỳnh Việt Nam</span>
+        </div>
+        <h1>Đăng nhập Tool Zalo</h1>
+        <form id="loginForm" class="login-form">
+          <label>
+            Tài khoản
+            <input id="username" name="username" autocomplete="username" required />
+          </label>
+          <label>
+            Mật khẩu
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
+          </label>
+          <button type="submit">Đăng nhập</button>
+          <p id="loginError" class="login-error" role="alert"></p>
+        </form>
+      </section>
+    </main>
+    <script>
+      const form = document.getElementById("loginForm");
+      const error = document.getElementById("loginError");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        error.textContent = "";
+        const button = form.querySelector("button");
+        button.disabled = true;
+        try {
+          const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              username: document.getElementById("username").value.trim(),
+              password: document.getElementById("password").value,
+            }),
+          });
+          if (!response.ok) {
+            const body = await response.json().catch(() => ({}));
+            throw new Error(body.detail || "Đăng nhập không thành công");
+          }
+          window.location.href = "/tools/zalo/send-message";
+        } catch (err) {
+          error.textContent = err.message;
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

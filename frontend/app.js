@@ -316,6 +316,7 @@ function renderZaloPage() {
         <div class="zalo-actions">
           <button id="openZaloBtn" class="btn btn-primary" type="button">Mở Zalo</button>
           <button id="refreshStatusBtn" class="btn btn-secondary" type="button">Làm mới</button>
+          <button id="logoutBtn" class="btn btn-secondary" type="button">Đăng xuất</button>
         </div>
       </div>
 
@@ -463,6 +464,7 @@ function renderPlaceholderPage(categoryId) {
 function bindZaloEvents() {
   $("openZaloBtn")?.addEventListener("click", openZalo);
   $("refreshStatusBtn")?.addEventListener("click", refreshStatus);
+  $("logoutBtn")?.addEventListener("click", logout);
   $("uploadBtn")?.addEventListener("click", uploadExcel);
   $("excelFile")?.addEventListener("change", () => {
     updateExcelFileLabel($("excelFile").files[0]);
@@ -540,6 +542,11 @@ async function openZalo() {
   } finally {
     button.disabled = false;
   }
+}
+
+async function logout() {
+  await api("/api/auth/logout", { method: "POST", timeout: 10000 });
+  window.location.href = "/login";
 }
 
 async function uploadExcel() {
