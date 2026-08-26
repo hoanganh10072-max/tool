@@ -22,7 +22,13 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./zalo_app.db"
     dry_run: bool = False
     dry_run_delay: float = 0.2
+    public_auth_user: str = ""
+    public_auth_password: str = ""
     project_root: Path = Field(default=BASE_DIR)
+
+    @property
+    def public_auth_enabled(self) -> bool:
+        return bool(self.public_auth_user and self.public_auth_password)
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
