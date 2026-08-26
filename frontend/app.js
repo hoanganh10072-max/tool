@@ -117,7 +117,12 @@ async function api(path, options = {}) {
     const contentType = response.headers.get("content-type") || "";
     const body = contentType.includes("application/json") ? await response.json() : await response.text();
     if (!response.ok) {
-      throw new Error(translateMessage(body.detail || body.message || `HTTP ${response.status}`));
+      const detail = typeof body === "object" ? body.detail || body.message : "";
+      if (response.status === 401 && detail === "Authentication required" && window.location.pathname !== "/login") {
+        window.location.href = "/login";
+        throw new Error("Vui lòng đăng nhập lại");
+      }
+      throw new Error(translateMessage(detail || `HTTP ${response.status}`));
     }
     return body;
   } catch (error) {
