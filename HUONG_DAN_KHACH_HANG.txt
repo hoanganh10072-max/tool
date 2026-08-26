@@ -1,0 +1,28 @@
+HUONG DAN CHAY TOOL ZALO TREN MAY KHACH
+
+1. Cai dat truoc
+- Cai Python 3.11 tro len.
+- Khi cai Python, tick chon "Add python.exe to PATH".
+
+2. Chay tool
+- Giai nen file zip.
+- Mo thu muc zalo-web-automation.
+- Bam dup vao file start.bat.
+- Lan dau chay co the mat vai phut de tai thu vien.
+- Khi server chay xong, trinh duyet se mo:
+  http://127.0.0.1:8001/login
+
+3. Dang nhap tool
+- Tai khoan: DNHH
+- Mat khau: DNHH
+
+4. Dang nhap Zalo
+- Trong tool, bam "Mo Zalo".
+- Dang nhap/quet QR Zalo tren trinh duyet hien ra.
+- Sau khi dang nhap thanh cong, quay lai tool va bam "Lam moi".
+
+5. Luu y
+- Khong tat cua so start.bat khi dang dung tool.
+- Neu tat cua so start.bat, tool se dung.
+- Moi may tinh se dang nhap Zalo rieng, khong dung chung tai khoan Zalo cua may khac.
+- File Excel can dung dinh dang .xlsx.
