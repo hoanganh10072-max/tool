@@ -1,0 +1,161 @@
+HUONG DAN CAI DAT VA CHAY TOOL ZALO
+
+File nay dung de gui cho khach hang khi ban ban giao tool.
+
+============================================================
+1. CAI PYTHON
+============================================================
+
+Buoc 1:
+Mo link tai Python:
+https://www.python.org/downloads/windows/
+
+Buoc 2:
+Bam nut "Download Python" va tai ban moi nhat.
+
+Buoc 3:
+Mo file vua tai ve, vi du:
+python-3.13.x-amd64.exe
+
+Buoc 4:
+O man hinh cai dat dau tien, BAT BUOC tick:
+Add python.exe to PATH
+
+Buoc 5:
+Bam:
+Install Now
+
+Buoc 6:
+Sau khi cai xong, mo PowerShell va kiem tra:
+python --version
+
+Neu hien Python 3.11 tro len la duoc.
+
+
+============================================================
+2. GIAI NEN TOOL
+============================================================
+
+Buoc 1:
+Giai nen file zip tool.
+
+Buoc 2:
+Mo thu muc:
+zalo-web-automation
+
+Trong thu muc nay se co file:
+start.bat
+
+
+============================================================
+3. CHAY TOOL
+============================================================
+
+Buoc 1:
+Bam dup vao file:
+start.bat
+
+Buoc 2:
+Lan dau chay, tool se tu tao moi truong va tai thu vien.
+Qua trinh nay co the mat vai phut.
+
+Buoc 3:
+Khi chay xong, trinh duyet se mo trang:
+http://127.0.0.1:8001/login
+
+Neu trinh duyet khong tu mo, hay mo Chrome/Edge va dan link tren vao.
+
+
+============================================================
+4. DANG NHAP TOOL
+============================================================
+
+Tai khoan:
+DNHH
+
+Mat khau:
+DNHH
+
+Nhap dung tai khoan va mat khau moi vao duoc tool.
+
+
+============================================================
+5. DANG NHAP ZALO
+============================================================
+
+Buoc 1:
+Trong tool, bam nut:
+Mo Zalo
+
+Buoc 2:
+Trinh duyet Zalo Web se hien ra.
+
+Buoc 3:
+Dang nhap Zalo bang so dien thoai hoac quet ma QR.
+
+Buoc 4:
+Sau khi dang nhap thanh cong, quay lai man hinh tool va bam:
+Lam moi
+
+
+============================================================
+6. SU DUNG CO BAN
+============================================================
+
+Buoc 1:
+Chuan bi file Excel dinh dang .xlsx.
+
+Buoc 2:
+Tai file Excel len tool.
+
+Buoc 3:
+Nhap noi dung tin nhan.
+
+Buoc 4:
+Bam:
+Bat dau gui
+
+Khong tat cua so start.bat khi tool dang chay.
+
+
+============================================================
+7. LOI THUONG GAP
+============================================================
+
+Loi 1: Bam start.bat nhung bao khong co Python
+- Cai Python theo muc 1.
+- Nho tick "Add python.exe to PATH" khi cai.
+- Cai xong thi tat PowerShell/cu so tool cu va mo lai start.bat.
+
+Loi 2: Trang login khong mo
+- Kiem tra cua so start.bat co dang chay khong.
+- Mo thu cong link:
+  http://127.0.0.1:8001/login
+
+Loi 3: Bao port 8001 dang duoc su dung
+- Co the tool dang chay san roi.
+- Thu mo:
+  http://127.0.0.1:8001/login
+- Neu van loi, khoi dong lai may va bam start.bat lai.
+
+Loi 4: Zalo bao can dang nhap
+- Bam "Mo Zalo".
+- Dang nhap Zalo Web.
+- Quay lai tool bam "Lam moi".
+
+Loi 5: Khong gui duoc tin nhan
+- Kiem tra Zalo Web da dang nhap chua.
+- Kiem tra file Excel dung .xlsx chua.
+- Kiem tra so dien thoai trong Excel co hop le khong.
+- Thu bam "Lam moi" roi chay lai.
+
+
+============================================================
+8. LUU Y QUAN TRONG
+============================================================
+
+- Tool chay tren may cua khach, khong phai tren server rieng.
+- Moi may tinh se phai dang nhap Zalo rieng.
+- Khong chia se thu muc browser_profile giua cac may.
+- Khong tat cua so start.bat khi dang dung tool.
+- Neu tat may hoac tat start.bat, tool se dung.
