@@ -1,0 +1,34 @@
+{
+  "id": "zalo_friend_message",
+  "name": "Tool Zalo kết bạn và tự động gửi tin nhắn",
+  "route": "/tools/zalo/send-message",
+  "status": "completed",
+  "frontend": {
+    "folder": "frontend",
+    "current_files": [
+      "frontend/app.js",
+      "frontend/style.css",
+      "frontend/index.html"
+    ],
+    "main_functions": [
+      "renderZaloPage",
+      "bindZaloEvents",
+      "uploadExcel",
+      "startJob",
+      "renderBulkImages"
+    ]
+  },
+  "core": {
+    "folder": "core",
+    "current_files": [
+      "app/api/excel.py",
+      "app/api/jobs.py",
+      "app/api/zalo.py",
+      "app/services/excel_service.py",
+      "app/services/job_service.py",
+      "app/services/messaging_service.py",
+      "app/automation/zalo_client.py",
+      "app/automation/selectors.py"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+.env
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.db
+uploads/
+logs/
+browser_profile/
+tmp_screens/
+.pytest_cache/
+test_zalo_app.db
+scripts/*.png
+scripts/*.mp4
+scripts/*.part

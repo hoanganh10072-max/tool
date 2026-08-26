@@ -1,0 +1,14 @@
+{
+  "id": "tool_id",
+  "name": "Tên tool",
+  "route": "/tools/example",
+  "status": "draft",
+  "frontend": {
+    "folder": "frontend",
+    "entry": "frontend/index.js"
+  },
+  "core": {
+    "folder": "core",
+    "entry": "core/main.py"
+  }
+}
