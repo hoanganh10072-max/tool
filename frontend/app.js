@@ -129,6 +129,9 @@ async function api(path, options = {}) {
     if (error.name === "AbortError") {
       throw new Error("Yêu cầu quá thời gian chờ. Vui lòng thử lại.");
     }
+    if (error instanceof TypeError && error.message === "Failed to fetch") {
+      throw new Error("Mất kết nối tới server. Kiểm tra server Python hoặc Cloudflare Tunnel rồi thử lại.");
+    }
     throw error;
   } finally {
     clearTimeout(timeout);
