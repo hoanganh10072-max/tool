@@ -102,6 +102,19 @@ async def stop_job(job_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
+@router.post("/{job_id}/resume")
+async def resume_job(job_id: int, db: Session = Depends(get_db)):
+    try:
+        job = job_service.resume_job(db, job_id)
+        return {"job_id": job.id, "status": job.status}
+    except AutomationBusyError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
 @router.get("/{job_id}/export")
 async def export_job(job_id: int, db: Session = Depends(get_db)):
     try:

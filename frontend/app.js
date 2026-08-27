@@ -408,6 +408,7 @@ function renderZaloPage() {
             </div>
             <div class="send-action-row">
               <button id="startJobBtn" class="btn btn-primary" type="button">Bắt đầu gửi</button>
+              <button id="resumeJobBtn" class="btn btn-secondary" type="button" hidden>Tiếp tục</button>
               <button id="stopJobBtn" class="btn btn-danger" type="button" disabled>Dừng</button>
             </div>
           </section>
@@ -482,6 +483,7 @@ function bindZaloEvents() {
   $("clearImagesBtn")?.addEventListener("click", clearBulkImages);
   bindImageDropZone();
   $("startJobBtn")?.addEventListener("click", startJob);
+  $("resumeJobBtn")?.addEventListener("click", resumeJob);
   $("stopJobBtn")?.addEventListener("click", stopJob);
   $("refreshJobsBtn")?.addEventListener("click", loadJobs);
   $("selectAllBtn")?.addEventListener("click", () => setAllSelection(true));
@@ -814,7 +816,7 @@ async function pollJob() {
   try {
     const job = await api(`/api/jobs/${state.currentJobId}`, { timeout: 15000 });
     renderJob(job);
-    if (["COMPLETED", "FAILED", "STOPPED", "INTERRUPTED", "USER_ACTION_REQUIRED"].includes(job.status)) {
+    if (["COMPLETED", "FAILED", "STOPPED", "INTERRUPTED", "LOGIN_REQUIRED", "USER_ACTION_REQUIRED"].includes(job.status)) {
       clearInterval(state.pollTimer);
       state.pollTimer = null;
       if ($("stopJobBtn")) $("stopJobBtn").disabled = true;
@@ -832,9 +834,29 @@ function renderJob(job) {
   $("processedCount").textContent = `${job.processed}/${job.total}`;
   $("sentCount").textContent = job.success;
   $("failedCount").textContent = job.failed;
+  const canResume = ["LOGIN_REQUIRED", "USER_ACTION_REQUIRED", "STOPPED", "FAILED"].includes(job.status) && job.pending > 0;
+  if ($("resumeJobBtn")) $("resumeJobBtn").hidden = !canResume;
+  if ($("stopJobBtn")) $("stopJobBtn").disabled = job.status !== "RUNNING";
   $("logs").innerHTML = (job.latest_logs || [])
     .map((line) => `<div class="log-line">${escapeHtml(line.created_at)} ${escapeHtml(line.level)} ${escapeHtml(translateLog(line.message))}</div>`)
     .join("");
+}
+
+async function resumeJob() {
+  if (!state.currentJobId) return;
+  const button = $("resumeJobBtn");
+  button.disabled = true;
+  try {
+    await refreshStatus();
+    await api(`/api/jobs/${state.currentJobId}/resume`, { method: "POST", timeout: 15000 });
+    button.hidden = true;
+    $("stopJobBtn").disabled = false;
+    startPolling();
+  } catch (error) {
+    alert(translateMessage(error.message));
+  } finally {
+    button.disabled = false;
+  }
 }
 
 async function stopJob() {

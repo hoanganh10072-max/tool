@@ -170,9 +170,9 @@ class JobService:
                 job = db.get(Job, job_id)
                 recipient = db.get(Recipient, recipient_id)
                 if job and recipient:
-                    recipient.status = "USER_ACTION_REQUIRED"
+                    recipient.status = status
                     recipient.error = str(exc)
-                    job.status = "USER_ACTION_REQUIRED"
+                    job.status = status
                     job.current_phone = phone
                     self.recount_job(db, job)
                     self.log(db, job.id, recipient.id, "ERROR", f"PHONE={phone} requires manual action: {exc}")
@@ -232,6 +232,46 @@ class JobService:
         self.log(db, job.id, None, "INFO", "Stop requested")
         db.commit()
         db.refresh(job)
+        return job
+
+    def resume_job(self, db: Session, job_id: int) -> Job:
+        job = db.get(Job, job_id)
+        if not job:
+            raise LookupError("Job not found")
+        if job.status not in {"LOGIN_REQUIRED", "USER_ACTION_REQUIRED", "FAILED", "STOPPED"}:
+            raise ValueError("Chỉ tiếp tục được phiên đã dừng hoặc cần thao tác")
+        active_db_job = (
+            db.execute(select(Job).where(Job.id != job.id, Job.status.in_(["PENDING", "RUNNING"]))).scalars().first()
+        )
+        active_task = any(not task.done() for task_id, task in self._active_tasks.items() if task_id != job.id)
+        if active_db_job or active_task:
+            raise AutomationBusyError("Another job is already active")
+
+        stuck_recipients = db.execute(
+            select(Recipient)
+            .where(Recipient.job_id == job.id, Recipient.status.in_(["LOGIN_REQUIRED", "USER_ACTION_REQUIRED", "SENDING"]))
+            .order_by(Recipient.id)
+        ).scalars().all()
+        for recipient in stuck_recipients:
+            recipient.status = "PENDING"
+            recipient.error = None
+
+        self.recount_job(db, job)
+        if job.pending <= 0:
+            job.status = "COMPLETED"
+            job.current_phone = None
+            job.finished_at = datetime.utcnow()
+        else:
+            job.status = "PENDING"
+            job.stop_requested = False
+            job.pause_requested = False
+            job.current_phone = None
+            job.finished_at = None
+            self.log(db, job.id, None, "INFO", "Job resumed")
+        db.commit()
+        db.refresh(job)
+        if job.status == "PENDING":
+            self.start_job(job.id)
         return job
 
     def get_job_status(self, db: Session, job_id: int) -> dict:
